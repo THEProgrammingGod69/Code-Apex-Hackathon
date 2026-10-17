@@ -1,0 +1,15 @@
+{
+  "name": "bhaiforce",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A desi run-and-gun: ten Indian bhais, destructible maps, four missions across India. Pure HTML5 canvas + WebAudio.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node build.mjs && node tests/smoke.mjs && node tests/traverse.mjs",
+    "shots": "node tests/action-shots.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
+  }
+}

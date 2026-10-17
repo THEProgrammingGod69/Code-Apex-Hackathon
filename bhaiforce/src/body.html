@@ -1,0 +1,206 @@
+<div id="app">
+  <canvas id="game" aria-label="Bhaiforce game view"></canvas>
+  <canvas id="ui" aria-hidden="true"></canvas>
+  <div id="inset-probe" aria-hidden="true"></div>
+
+  <div id="touch" hidden>
+    <div id="stick" class="idle"></div>
+    <div id="stick-knob" class="idle"></div>
+    <div class="tbtn" data-act="melee"><span>THAPPAD</span></div>
+    <div class="tbtn" data-act="special"><span class="star">★</span><b id="tb-special-count">3</b></div>
+    <div class="tbtn big" data-act="fire"><span>FIRE</span></div>
+    <div class="tbtn big" data-act="jump"><span>JUMP</span></div>
+  </div>
+  <button id="btn-pause" class="icon-btn" hidden aria-label="Pause">
+    <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><rect x="4" y="3" width="4" height="14" rx="1"/><rect x="12" y="3" width="4" height="14" rx="1"/></svg>
+  </button>
+
+  <!-- TITLE -->
+  <section id="scr-title" class="screen">
+    <div class="logo">
+      <div class="logo-hi">भाईफोर्स</div>
+      <h1 class="logo-en">BHAIFORCE</h1>
+      <div class="logo-tag">Ek bhai. Sau goonde. Zero chill.</div>
+    </div>
+    <button id="btn-start" class="cta pulse">TAP TO START</button>
+    <p class="fine">Sound on · Phone landscape mein khelo</p>
+  </section>
+
+  <!-- MAIN MENU -->
+  <section id="scr-menu" class="screen" hidden>
+    <div class="menu-grid">
+      <div class="logo compact">
+        <div class="logo-hi">भाईफोर्स</div>
+        <h1 class="logo-en">BHAIFORCE</h1>
+        <div class="logo-tag">10 bhai · 4 mission · 1 Don Dhoka</div>
+      </div>
+      <nav class="menu-list trim" aria-label="Main menu">
+        <button class="cta" data-go="missions">MISSION SHURU</button>
+        <button class="btn" data-go="gallery">BHAI GALLERY</button>
+        <button class="btn" data-go="howto">KAISE KHELEIN</button>
+        <button class="btn" data-go="settings">SETTINGS</button>
+        <button id="btn-fullscreen" class="btn ghost">FULLSCREEN</button>
+      </nav>
+    </div>
+  </section>
+
+  <!-- MISSIONS -->
+  <section id="scr-missions" class="screen" hidden>
+    <header class="bar"><button class="back" data-go="menu" aria-label="Back">←</button><h2>Mission Chuno</h2></header>
+    <div id="mission-list" class="mission-list"></div>
+  </section>
+
+  <!-- BHAI SELECT / GALLERY -->
+  <section id="scr-bhais" class="screen" hidden>
+    <header class="bar"><button id="bhais-back" class="back" data-go="missions" aria-label="Back">←</button><h2 id="bhais-title">Apna Bhai Chuno</h2></header>
+    <div class="bhai-layout">
+      <div id="bhai-grid" class="bhai-grid"></div>
+      <aside id="bhai-detail" class="bhai-detail trim"></aside>
+    </div>
+    <div class="row">
+      <button id="btn-random" class="btn">RANDOM BHAI</button>
+      <button id="btn-pick" class="cta">CHALO →</button>
+    </div>
+  </section>
+
+  <!-- BRIEFING -->
+  <section id="scr-brief" class="screen" hidden>
+    <div class="brief-card trim">
+      <div class="brief-head">
+        <canvas id="brief-portrait" width="64" height="64" aria-hidden="true"></canvas>
+        <div>
+          <div class="eyebrow">Control Room · Commissioner Chacha</div>
+          <h2 id="brief-title">Mission</h2>
+          <div id="brief-place" class="place"></div>
+        </div>
+      </div>
+      <div id="brief-text" class="brief-text"></div>
+      <div id="brief-bhai" class="brief-bhai"></div>
+      <div class="row">
+        <button class="btn" data-go="bhais">← BHAI BADLO</button>
+        <button id="btn-go" class="cta">CHALO!</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAUSE -->
+  <section id="scr-pause" class="screen" hidden>
+    <div class="panel trim">
+      <h2 class="panel-title">PAUSE</h2>
+      <p class="muted">Chai break. Goonde wait kar rahe hain.</p>
+      <button id="btn-resume" class="cta">RESUME</button>
+      <button id="btn-restart" class="btn">RESTART MISSION</button>
+      <button class="btn" data-go="settings">SETTINGS</button>
+      <button class="btn" data-go="howto">CONTROLS</button>
+      <button id="btn-quit" class="btn ghost">QUIT TO MENU</button>
+    </div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="scr-settings" class="screen" hidden>
+    <header class="bar"><button class="back" data-go="back" aria-label="Back">←</button><h2>Settings</h2></header>
+    <div class="panel wide settings">
+      <label class="field"><span>Music</span><input id="set-music" type="range" min="0" max="1" step="0.05"></label>
+      <label class="field"><span>Sound effects</span><input id="set-sfx" type="range" min="0" max="1" step="0.05"></label>
+      <label class="field toggle"><span>Voice lines (text-to-speech)</span><input id="set-voice" type="checkbox"></label>
+      <label class="field toggle"><span>Vibration</span><input id="set-vibrate" type="checkbox"></label>
+      <label class="field toggle"><span>Screen shake</span><input id="set-shake" type="checkbox"></label>
+      <fieldset class="field seg"><legend>Difficulty</legend>
+        <label><input type="radio" name="set-diff" value="chill"><span>Chill · 3 hits</span></label>
+        <label><input type="radio" name="set-diff" value="bhai"><span>Bhai · 2 hits</span></label>
+        <label><input type="radio" name="set-diff" value="khatarnaak"><span>Khatarnaak · 1 hit</span></label>
+      </fieldset>
+      <fieldset class="field seg"><legend>Touch controls</legend>
+        <label><input type="radio" name="set-touch" value="auto"><span>Auto</span></label>
+        <label><input type="radio" name="set-touch" value="on"><span>On</span></label>
+        <label><input type="radio" name="set-touch" value="off"><span>Off</span></label>
+      </fieldset>
+      <label class="field"><span>Touch button size</span><input id="set-btn" type="range" min="0.8" max="1.35" step="0.05"></label>
+      <button id="btn-reset" class="btn ghost small">Reset progress</button>
+    </div>
+  </section>
+
+  <!-- HOW TO PLAY -->
+  <section id="scr-howto" class="screen" hidden>
+    <header class="bar"><button class="back" data-go="back" aria-label="Back">←</button><h2>Kaise Khelein</h2></header>
+    <div class="howto">
+      <div class="panel">
+        <h3>Phone</h3>
+        <ul>
+          <li><b>Left thumb</b> anywhere on the left: move. Push up on a ladder to climb.</li>
+          <li><b>FIRE</b>: hold to shoot. <b>JUMP</b>: tap or hold.</li>
+          <li><b>★</b>: special move (3 per bhai). <b>THAPPAD</b>: slap. It also bats bullets back.</li>
+          <li>Tip: <b>Fullscreen</b> from the menu, or Add to Home Screen.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Keyboard · Gamepad</h3>
+        <ul class="keys">
+          <li><kbd>A</kbd><kbd>D</kbd> / <kbd>←</kbd><kbd>→</kbd> move · <kbd>W</kbd><kbd>S</kbd> ladders</li>
+          <li><kbd>Space</kbd> jump · <kbd>J</kbd> fire · <kbd>L</kbd> special · <kbd>F</kbd> thappad</li>
+          <li><kbd>Esc</kbd> pause · Gamepad: A jump, X fire, B special, Y thappad</li>
+        </ul>
+      </div>
+      <div class="panel span">
+        <h3>Bhaiforce rules</h3>
+        <ul>
+          <li><b>Push into a wall and hold JUMP</b> to climb it, Broforce style.</li>
+          <li><b>Free caged bhais</b>: +1 life and you instantly become that bhai, with fresh specials.</li>
+          <li><b>Raise the Tiranga</b> at checkpoints. That's where the next bhai parachutes in.</li>
+          <li>Everything breaks. Red LPG cylinders go boom. Combos fill the score.</li>
+          <li>Beat the boss, then grab the Jugaad-copter's rope ladder to finish.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="scr-result" class="screen" hidden>
+    <div class="panel trim result">
+      <h2 id="res-title" class="panel-title big">MISSION SAFAL!</h2>
+      <div id="res-sub" class="muted"></div>
+      <div id="res-stars" class="stars-big" aria-label="Stars earned"></div>
+      <dl id="res-stats" class="stats"></dl>
+      <div class="row">
+        <button class="btn" data-go="menu">MENU</button>
+        <button id="btn-replay" class="btn">REPLAY</button>
+        <button id="btn-next" class="cta">AGLA MISSION →</button>
+        <button id="btn-finale" class="cta" hidden>THE END →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME OVER -->
+  <section id="scr-over" class="screen" hidden>
+    <div class="panel trim">
+      <h2 class="panel-title big red">GAME OVER</h2>
+      <p class="quote">"Picture abhi baaki hai, mere dost!"</p>
+      <p id="over-score" class="muted"></p>
+      <div class="row">
+        <button class="btn" data-go="menu">MENU</button>
+        <button id="btn-retry" class="cta">PHIR SE!</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- VICTORY -->
+  <section id="scr-victory" class="screen" hidden>
+    <div class="panel trim result">
+      <div class="logo-hi">देश बच गया!</div>
+      <h2 class="panel-title big">DESH BACH GAYA!</h2>
+      <p>World Cup final LIVE hai. Momos garam hain. Pyaaz sasta hai. Kaju katli wapas aa gayi.</p>
+      <p class="muted">Don Dhoka parachute leke bhaag gaya... "Main wapas aaunga!"</p>
+      <p class="fine">Made with dhol, chai aur jugaad. Every sound and sprite is generated in code.</p>
+      <div class="row"><button class="cta" data-go="menu">MENU</button></div>
+    </div>
+  </section>
+
+  <div id="rotate" hidden>
+    <div class="phone" aria-hidden="true"></div>
+    <h2>Phone ghumao!</h2>
+    <p>Bhaiforce plays in landscape.</p>
+    <button id="btn-rotate-skip" class="btn ghost small">Continue anyway</button>
+  </div>
+
+  <div id="loading">BHAIFORCE</div>
+</div>
