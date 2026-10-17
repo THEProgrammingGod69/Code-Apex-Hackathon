@@ -8,7 +8,7 @@ The whole game is one self-contained HTML file. Every sprite, tile, background, 
 
 ## Play
 
-- **Live:** see the deployment link in the repository's main README.
+- **Live:** https://bhaiforce.vercel.app (works on phones: rotate to landscape)
 - **Locally:** open `dist/index.html` in any modern browser. Or run `npm run build`, then serve `dist/`.
 - **Phone tip:** add it to your home screen for a fullscreen landscape experience. The page ships a web-app manifest.
 
